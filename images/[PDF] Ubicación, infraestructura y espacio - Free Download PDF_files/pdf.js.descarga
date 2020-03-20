@@ -1,0 +1,126 @@
+jQuery(document).ready(function(){js_tab();if(jQuery("#upload").length>0){js_upload();}
+jQuery(window).resize(function(){if(jQuery("#viewer").length>0){var window_height=jQuery(window).height();var window_width=jQuery(window).width();if(window_width>840){jQuery("#viewer").css({height:window_height-$("header").height()-$(".form-check").height()-40});}else{jQuery("#viewer").css({height:window_width});}}});jQuery(window).trigger('resize');if(jQuery("#embed-size").length>0){jQuery("#embed-size, #embed-start").change(function(){var size_embed=jQuery('#embed-size').val().split("x");var embed_script_text=embed_script.replace('{start}',0);embed_script_text=embed_script_text.replace('{width}',size_embed[0]);embed_script_text=embed_script_text.replace('{height}',size_embed[1]);$("#embed-script").val(embed_script_text);});jQuery("#embed-size").trigger('change');}});function js_tab(){jQuery(".tab-item a").click(function(){var parent=jQuery(this).parents('.tab');var next_parent=parent.next();jQuery(".tab-content",next_parent).addClass('hide');jQuery(jQuery(this).attr("href")).removeClass('hide');localStorage.setItem('activeTab',jQuery(this).attr("href"));jQuery(".tab-item",parent).removeClass('active');jQuery(this).parent(".tab-item").addClass('active');});if((window.location+"").indexOf('#')!=-1){localStorage.setItem('activeTab','#'+(window.location+"").split('#')[1]);}
+var activeTab=localStorage.getItem('activeTab');if(activeTab){jQuery('a[href="'+activeTab+'"]').trigger('click');}}
+function js_upload()
+{var category_options_html=typeof category_options!='undefined'?category_options:'';jQuery("#upload").filer({limit:null,maxSize:null,extensions:null,changeInput:'<div class="jFiler-input-dragDrop"><div class="jFiler-input-inner"><div class="jFiler-input-icon"><i class="icon-jfi-cloud-up-o"></i></div><div class="jFiler-input-text"><h3>Drag&Drop files here</h3> <span style="display:inline-block; margin: 15px 0">or</span></div><a class="jFiler-input-choose-btn blue">Browse Files</a></div></div>',showThumbs:true,theme:"dragdropbox",templates:{box:'<ul class="jFiler-items-list jFiler-items-grid"></ul>',item:'<li class="jFiler-item">\
+                        <div class="jFiler-item-container">\
+                            <div class="jFiler-item-inner">\
+                                <div class="jFiler-item-thumb">\
+                                    <div class="jFiler-item-status"></div>\
+                                    <div class="jFiler-item-info">\
+                                        <span class="jFiler-item-title"><b title="{{fi-name}}">{{fi-name | limitTo: 25}}</b></span>\
+                                        <span class="jFiler-item-others">{{fi-size2}}</span>\
+                                        <span class="jFiler-item-link"></span>\
+                                    </div>\
+                                    {{fi-image}}\
+                                </div>\
+                                <div class="jFiler-item-assets jFiler-row">\
+                                    <ul class="list-inline pull-left">\
+                                        <li>{{fi-progressBar}}</li>\
+                                    </ul>\
+                                    <ul class="list-inline pull-right">\
+                                        <li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li>\
+                                    </ul>\
+                                </div>\
+                            </div>\
+                            <div class="jFiler-itemForm">\
+                                <form action="/docUpdate" method="post" class="form-horizontal">\
+                                    <input type="hidden" name="_id" class="_id" value="" />\
+                                    <fieldset>\
+                                        <section>\
+                                            <div class="form-group">\
+                                                <div class="col-3"><label class="form-label">Title *</label></div>\
+                                                <div class="col-9">\
+                                                    <input type="text" class="form-input" name="title" required="required" />\
+                                                </div>\
+                                            </div>\
+                                            <div class="form-group">\
+                                                <div class="col-3"><label class="form-label">Category *</label></div>\
+                                                <div class="col-9">\
+                                                    <select class="form-input" name="categories[]" required="required" multiple="multiple" style="height: 120px;"><option value="">-Select Category</option>'+category_options_html+'</select>\
+                                                </div>\
+                                            </div>\
+                                            <div class="form-group">\
+                                                <div class="col-3"><label class="form-label">Description *</label></div>\
+                                                <div class="col-9">\
+                                                    <textarea class="form-input" name="description" style="height: 100px" rows="5" required="required"></textarea>\
+                                                </div>\
+                                            </div>\
+                                            <div class="form-group">\
+                                                <div class="col-3"><label class="form-label">Tags</label></div>\
+                                                <div class="col-9">\
+                                                    <input class="form-input" type="text" name="tags" placeholder="separated by commas" />\
+                                                </div>\
+                                            </div>\
+                                            <div class="form-group">\
+                                                <div class="col-3"><label class="form-label"></label></div>\
+                                                <div class="col-9">\
+                                                    <button type="submit" class="btn btn-success">Save & Continue</button>\
+                                                </div>\
+                                            </div>\
+                                        </section>\
+                                    </fieldset>\
+                                </form> \
+                            </div>\
+                        </div>\
+                    </li>',itemAppend:'<li class="jFiler-item">\
+                            <div class="jFiler-item-container">\
+                                <div class="jFiler-item-inner">\
+                                    <div class="jFiler-item-thumb">\
+                                        <div class="jFiler-item-status"></div>\
+                                        <div class="jFiler-item-info">\
+                                            <span class="jFiler-item-title"><b title="{{fi-name}}">{{fi-name | limitTo: 25}}</b></span>\
+                                            <span class="jFiler-item-others">{{fi-size2}}</span>\
+                                        </div>\
+                                        {{fi-image}}\
+                                    </div>\
+                                    <div class="jFiler-item-assets jFiler-row">\
+                                        <ul class="list-inline pull-left">\
+                                            <li><span class="jFiler-item-others">{{fi-icon}}</span></li>\
+                                        </ul>\
+                                        <ul class="list-inline pull-right">\
+                                            <li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li>\
+                                        </ul>\
+                                    </div>\
+                                </div>\
+                                <div class="jFiler-itemForm">\
+                                    <form action="/docUpdate" method="post" class="form-horizontal">\
+                                        <input type="hidden" name="_id" class="_id" value="" />\
+                                        <fieldset>\
+                                            <section>\
+                                                <div class="form-group">\
+                                                    <div class="col-3"><label class="form-label">Title *</label></div>\
+                                                    <div class="col-9">\
+                                                        <input class="form-input" type="text" name="title" required="required" />\
+                                                    </div>\
+                                                </div>\
+                                                <div class="form-group">\
+                                                    <div class="col-3"><label class="form-label">Category *</label></div>\
+                                                    <div class="col-9">\
+                                                        <select class="form-input" name="categories[]" required="required" multiple="multiple" style="height: 150px;"><option value="">-Select Category</option>'+category_options_html+'</select>\
+                                                    </div>\
+                                                </div>\
+                                                <div class="form-group">\
+                                                    <div class="col-3"><label class="form-label">Description *</label></div>\
+                                                    <div class="col-9">\
+                                                        <textarea class="form-input" name="description" rows="5" required="required"></textarea>\
+                                                    </div>\
+                                                </div>\
+                                                <div class="form-group">\
+                                                    <div class="col-3"><label class="form-label">Tags</label></div>\
+                                                    <div class="col-9">\
+                                                        <input class="form-input" type="text" name="tags" placeholder="separated by commas" />\
+                                                    </div>\
+                                                </div>\
+                                                <div class="form-group">\
+                                                    <div class="col-3"><label class="form-label"></label></div>\
+                                                    <div class="col-9">\
+                                                        <button type="submit" class="btn btn-success">Save & Continue</button>\
+                                                    </div>\
+                                                </div>\
+                                            </section>\
+                                        </fieldset>\
+                                    </form> \
+                                </div>\
+                            </div>\
+                        </li>',progressBar:'<div class="bar"></div>',itemAppendToEnd:false,removeConfirmation:true,_selectors:{list:'.jFiler-items-list',item:'.jFiler-item',progressBar:'.bar',remove:'.jFiler-item-trash-action'}},dragDrop:{dragEnter:null,dragLeave:null,drop:null,},uploadFile:{url:"/uploadFile",data:null,type:'POST',enctype:'multipart/form-data',beforeSend:function(){},success:function(data,el){var parent=el.find(".jFiler-jProgressBar").parent();el.find("._id").val(data.metas[0].document_id);el.find(".jFiler-jProgressBar").fadeOut("slow",function(){$("<div class=\"jFiler-item-others text-success\"><i class=\"icon-jfi-check-circle\"></i> Success</div>").hide().appendTo(parent).fadeIn("slow");});el.find('form').ajaxForm({dataType:'json',beforeSend:function(){el.find('.jFiler-itemForm').addClass('hidden');},success:function(response){el.find('.jFiler-item-link').html('<a href="'+response.url+'" class="btn btn-success">View Document</a>');}});},error:function(el){var parent=el.find(".jFiler-jProgressBar").parent();el.find(".jFiler-jProgressBar").fadeOut("slow",function(){$("<div class=\"jFiler-item-others text-error\"><i class=\"icon-jfi-minus-circle\"></i> Error</div>").hide().appendTo(parent).fadeIn("slow");});},statusCode:null,onProgress:null,onComplete:null},files:null,addMore:false,clipBoardPaste:true,excludeName:null,beforeRender:null,afterRender:null,beforeShow:null,beforeSelect:null,onSelect:null,afterShow:null,onRemove:function(itemEl,file,id,listEl,boxEl,newInputEl,inputEl){var file=file.name;$.post('/removeFile',{file:file});},onEmpty:null,options:null,captions:{button:"Choose Files",feedback:"Choose files To Upload",feedback2:"files were chosen",drop:"Drop file here to Upload",removeConfirmation:"Are you sure you want to remove this file?",errors:{filesLimit:"Only {{fi-limit}} files are allowed to be uploaded.",filesType:"Only Images are allowed to be uploaded.",filesSize:"{{fi-name}} is too large! Please upload file up to {{fi-maxSize}} MB.",filesSizeAll:"Files you've choosed are too large! Please upload files up to {{fi-maxSize}} MB."}}});}
